@@ -1,0 +1,17 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '6.x'
+
+  - script: echo "Building the app..."
+    displayName: 'Build Application'
+
+  - script: echo "Deploying to Azure..."
+    displayName: 'Deploy to Azure'
