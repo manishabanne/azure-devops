@@ -1,0 +1,36 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '6.x'
+
+  - script: echo "Building the app..."
+    displayName: 'Build Application'
+
+  - script: echo "Deploying to Azure..."
+    displayName: 'Deploy to Azure'
+
+  # Terraform Initialization
+  - script: |
+      terraform init
+    workingDirectory: terraform-examples
+    displayName: 'Terraform Init'
+
+  # Terraform Plan
+  - script: |
+      terraform plan -out=tfplan
+    workingDirectory: terraform-examples
+    displayName: 'Terraform Plan'
+
+  # Terraform Apply
+  - script: |
+      terraform apply -auto-approve tfplan
+    workingDirectory: terraform-examples
+    displayName: 'Terraform Apply'
+
